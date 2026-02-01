@@ -1,12 +1,8 @@
-
-```markdown
 # PHP Men's Grooming Shop 🛒
 
 ## 📌 프로젝트 개요
 이 프로젝트는 **PHP와 MySQL을 사용해 구현한 남성 중심 화장품 쇼핑몰 웹 프로젝트**입니다.  
 올리브영 스타일의 쇼핑몰 구조를 참고하여 **상품 관리, 관리자 페이지, Q&A 게시판** 등을 직접 구현한 학습·과제용 프로젝트입니다.
-
----
 
 ## 🛒 쇼핑몰 주제
 - **주제:** 남성 그루밍 · 화장품 쇼핑몰  
@@ -16,8 +12,6 @@
   - 할인, New/Hit/Sale 아이콘
   - 관리자 기반 상품 관리
 
----
-
 ## 🧱 기술 스택
 - **Backend:** PHP (procedural, 레거시 스타일)
 - **Database:** MySQL (mysqli)
@@ -25,7 +19,6 @@
 - **Server 환경:** PHP 7+ (구버전 PHP 코드 일부 수정 포함)
 - **Version Control:** Git / GitHub
 
----
 
 ## 🧩 주요 기능 구성
 
@@ -58,9 +51,10 @@
 - DB 연결 및 공통 설정 분리
 - SQL 직접 작성 방식 (ORM 미사용)
 
----
+
 
 ## 🛠️ 구현 과정에서 고려한 사항
+
 - PHP 7+ 환경에서 제거된 함수(`eregi_replace`)를 `preg_replace` / `str_ireplace` 등으로 수정
 - 클라이언트(JavaScript)에서 민감 정보 검증을 하지 않고 **서버(PHP)에서 비밀번호 검증**
 - `<textarea>`와 `<input>`의 데이터 전송 방식 차이 이해 및 적용
