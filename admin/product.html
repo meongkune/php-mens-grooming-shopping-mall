@@ -1,0 +1,147 @@
+<!---------------------------------------------------------------------------------------------
+	제목 : 내 손으로 만드는 PHP 쇼핑몰 (실습용 디자인 HTML)
+
+	소속 : 인덕대학교 컴퓨터소프트웨어학과
+	이름 : 교수 윤형태 (2024.02)
+---------------------------------------------------------------------------------------------->
+<!doctype html>
+<html lang="kr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>INDUK Mall</title>
+	<link  href="../css/bootstrap.min.css" rel="stylesheet">
+	<link  href="../css/my.css" rel="stylesheet">
+	<script src="..js/jquery-3.7.1.min.js"></script>
+	<script src="../js/bootstrap.bundle.min.js"></script>
+	<script src="../js/my.js"></script>
+</head>
+<body>
+
+<div class="container">
+<!-------------------------------------------------------------------------------------------->	
+<script> document.write(admin_menu());</script>
+<!-------------------------------------------------------------------------------------------->	
+<script>
+	function  search_clear()
+	{
+		form1.sel1.value="0";
+		form1.sel2.value="0";
+		form1.sel3.value="0";
+		form1.sel4.value="1";
+		form1.text1.value="";
+	}
+</script>
+
+<div class="row mx-1  justify-content-center">
+	<div class="col" align="center">
+
+	<h4 class="m-0 mb-3">제품</h4>
+	
+	<form name="form1" method="post" action="product.html">
+	
+	<table class="table table-sm table-borderless m-0 p-0">
+		<tr>
+			<td width="20%" align="left" style="padding-top:8px">
+				제품수 : <font color="red">20</font>
+			</td>
+			<td align="right">
+				<div class="d-inline-flex">
+					<select name="sel1" class="form-select form-select-sm bg-light myfs12" style="width:100px">
+						<option value="0" selected>상품상태</option>
+						<option value="1">판매중</option>
+						<option value="2">판매중지</option>
+						<option value="3">품절</option>
+					</select>&nbsp;
+					<select name="sel2" class="form-select form-select-sm bg-light myfs12" style="width:120px">
+						<option value="0" selected>아이콘선택</option>
+						<option value="1">New</option>
+						<option value="2">Hit</option>
+						<option value="3">Sale</option>
+					</select>&nbsp;
+				</div>
+				<div class="d-inline-flex">
+					<select name="sel3" class="form-select form-select-sm bg-light myfs12" style="width:100px">
+						<option value="0" selected>메뉴선택</option>
+						<option value="1">코트</option>
+						<option value="2">브라우스</option>
+						<option value="3">바지</option>
+					</select>&nbsp;
+					<select name="sel4" class="form-select form-select-sm bg-light myfs12" style="width:100px">
+						<option value="1" selected>제품이름</option>
+						<option value="2">제품번호</option>
+					</select>
+				</div>
+				<div class="d-inline-flex">
+					<div class="input-group input-group-sm">
+						<input type="text" name="text1" value="" size="10" 
+							class="form-control myfs12" 
+							onKeydown="if (event.keyCode == 13) { form1.submit(); }"> 
+						<button class="btn mycolor1 myfs12" type="button" 
+							onClick="form1.submit();">검색</button>
+					</div>
+				</div>
+				<div class="d-inline-flex">
+					<a href="javascript:search_clear()" class="btn btn-sm mycolor1 myfs12">초기화</a>&nbsp;&nbsp;&nbsp;
+					<a href="product_new.html" class="btn btn-sm mycolor1 myfs12">추가</a>&nbsp;
+				</div>
+				
+			</td>
+		</tr>
+	</table>
+	
+	</form>
+
+	<table class="table table-sm table-bordered table-hover mb-1">
+		<tr class="bg-light">
+			<td width="10%">제품분류</td>
+			<td width="10%">제품코드</td>
+			<td width="35%">제품명</td>
+			<td width="10%">판매가</td>
+			<td width="10%">상태</td>
+			<td width="15%">이벤트</td>
+			<td width="10%">수정/삭제</td>
+		</tr>
+		<tr>
+			<td>코트</td>
+			<td>coat001</td>
+			<td align="left">비싸고 멋진 코트</td>
+			<td align="right" class="px-2">2,500,000</td>
+			<td>판매중</td>
+			<td>New Hit Sale(10%)</td>
+			<td>
+				<a href="product_edit.html?id=1&sel1=&sel2=&sel3=&sel4=&text1=&page=1" class="btn btn-sm btn-outline-info mybutton-blue">수정</a>
+				<a href="product_delete.html?id=1&sel1=&sel2=&sel3=&sel4=&text1&page=1" class="btn btn-sm btn-outline-danger mybutton-red" onclick="javascript:return confirm('삭제할까요 ?');">삭제</a>				
+			</td>
+		</tr>
+	</table>
+
+	<nav aria-label="Page navigation example">
+		<ul class="pagination pagination-sm justify-content-center my-3">
+			<li class="page-item">
+				<a class="page-link" href="#" aria-label="Previous">
+					<span aria-hidden="true">◁</span>
+				</a>
+			</li>
+			<li class="page-item"><a class="page-link" href="product.html?page=1&sel1=&sel2=&sel3=&sel4=&text1=">1</a></li>
+			<li class="page-item active" aria-current="page">
+				<span class="page-link mycolor1">2</span>
+			</li>
+			<li class="page-item"><a class="page-link" href="product.html?page=3&sel1=&sel2=&sel3=&sel4=&text1=">3</a></li>
+			<li class="page-item"><a class="page-link" href="product.html?page=4&sel1=&sel2=&sel3=&sel4=&text1=">4</a></li>
+			<li class="page-item"><a class="page-link" href="product.html?page=5&sel1=&sel2=&sel3=&sel4=&text1=">5</a></li>
+			<li class="page-item">
+				<a class="page-link" href="#" aria-label="Next">
+					<span aria-hidden="true">▷</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+
+	</div>
+</div>
+<!-------------------------------------------------------------------------------------------->	
+</div>
+
+</body>
+</html>

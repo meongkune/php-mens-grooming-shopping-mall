@@ -1,0 +1,31 @@
+			<?
+		
+		if ($row["gubun"]==0)
+			echo("<input type='radio' name='sm' value='0'checked>회원
+				  <input type='radio' name='sm' value='1' >탈퇴");
+		else
+			echo("<input type='radio' name='sm' value='0'> 회원
+				  <input type='radio' name='sm' value='1'checked>탈퇴");
+		
+		?>
+
+
+
+
+		<?
+		if ($row["gubun"]==0)
+			
+						<div class="form-check">
+					
+							echo ("<input class="form-check-input" type="radio" name="gubun" value="0" checked>
+							<label class="form-check-label me-2">회원</label>");
+						</div>
+						else
+						<div class="form-check">
+							echo ("<input class="form-check-input" type="radio" name="gubun" value="1">
+							<label class="form-check-label">탈퇴</label>");
+						</div>
+					</div>
+
+?>
+	
