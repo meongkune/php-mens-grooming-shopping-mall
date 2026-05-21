@@ -48,17 +48,20 @@
 </style>
 <script>
 const optionExtraPrices = {
-  41: 0,     // 기본
-  37: 3000,  // +25ml
-  38: 6000,  // +50ml
-  39: 9000,  // +75ml
-  40: 12000  // +100ml
+  1: 0,     // 튜브형
+  2: 1000,  // 펌프형
+  3: 1000,  // 스프레이형
+  4: 1500,  // 드롭퍼형
+  5: 3000,  // 캡슐형
+  6: 1000,  // 자/크림단지형
+  7: 1000,  // 스틱형
+  8: 0      // 리필 파우치형
 };
 
 function cal_price() {
   const qty = parseInt(form2.num.value) || 1;
   const base_price = parseInt(form2.price.value);
-  const opt1 = form2.opts1 ? parseInt(form2.opts1.value) : 41;
+  const opt1 = form2.opts1 ? parseInt(form2.opts1.value) : 1;
   const extra_price = optionExtraPrices[opt1] || 0;
   const total = (base_price + extra_price) * qty;
   

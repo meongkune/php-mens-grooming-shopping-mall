@@ -1,21 +1,18 @@
 <?
-	include "main_top.php";
-	
-	$id=$_REQUEST["id"];
-		
-	$sql="select * from qa where id=$id";
-	
-	$result=mysqli_query($db,$sql);
-	if (!$result) exit("에러: $sql");
-	$row= mysqli_fetch_array($result); 
-	
-	$contents=stripslashes($row["contents"]);
-	$contents=nl2br($contents);
-	
+include "main_top.php";
 
-	
+$id=$_REQUEST["id"];
+$text1=$_REQUEST["text1"] ?? "";
+
+$sql="select * from qa where id=$id";
+$result=mysqli_query($db,$sql);
+if (!$result) exit("에러: $sql");
+$row= mysqli_fetch_array($result);
+
+$contents=stripslashes($row["contents"]);
+$contents=nl2br($contents);
 ?>
-<!--  현재 페이지 자바스크립  -------------------------------------------->
+
 <script>
 	function Go_Reply()	{
 		form2.action="qa_reply.php";
@@ -51,80 +48,59 @@
 	}
 </script>
 
-<div class="row m-1  mb-0 justify-content-center">
-	<div class="col" align="center">
+<div class="clean-page">
+	<div class="clean-head">
+		<h4>Q &amp; A</h4>
+		<p>문의 내용을 확인하고 답변, 수정, 삭제를 진행할 수 있습니다.</p>
+	</div>
 
-		<h4 class="mt-5">Q & A</h4>
-
-		<hr style="height:2px" class="mb-0">
-		<table class="table table-sm m-0">
-			<tr height="35">
-				<td width="15%" class="bg-light">제목</td>
-				<td align="left" class="px-2"><?=htmlspecialchars(stripslashes($row["title"])); ?></td>
-			</tr>
-			<tr height="35">
-				<td class="bg-light">작성자</td>
-				<td align="left" class="px-2"><?=$row["name"]; ?></td>
-			</tr>
-			<tr height="35">
-				<td class="bg-light">작성일</td>
-				<td align="left" class="px-2"><?=$row["writeday"]; ?></td>
-			</tr>
-			<tr height="35">
-				<td class="bg-light">조회</td>
-				<td align="left" class="px-2"><?=$row["count"]; ?></td>
-			</tr>
-			<tr>
-				<td valign="top" class="bg-light pt-2">내용</td>
-				<td height="250" align="left" valign="top" class="p-2">
-					<?=$contents; ?>
-				</td>
-			</tr>
-		</table>
+	<div class="clean-card">
+		<div class="clean-meta-grid">
+			<div class="label">제목</div>
+			<div><?=htmlspecialchars(stripslashes($row["title"])); ?></div>
+			<div class="label">작성자</div>
+			<div><?=$row["name"]; ?></div>
+			<div class="label">작성일</div>
+			<div><?=$row["writeday"]; ?></div>
+			<div class="label">조회</div>
+			<div><?=$row["count"]; ?></div>
+		</div>
+		<div class="clean-content-box">
+			<?=$contents; ?>
+		</div>
+	</div>
 
 <?
-	$count=$row["count"];
-	$sql1="update qa set count=$count+1 where id=$id";
-	$result1=mysqli_query($db,$sql1);
-	if (!$result1) exit("에러: $sql1");
+$count=$row["count"];
+$sql1="update qa set count=$count+1 where id=$id";
+$result1=mysqli_query($db,$sql1);
+if (!$result1) exit("에러: $sql1");
 ?>
 
-
-		<!--  form2 시작 -->
-		<form name="form2" method="post" action="">
+	<form name="form2" method="post" action="" class="clean-card clean-form mt-3">
 		<input type="hidden" name="page" value="1">
 		<input type="hidden" name="text1" value="<?=$text1;?>">
 		<input type="hidden" name="id" value="<?=$id;?>">
 
-		<table width="100%" class="m-1">
-			<tr>
-				<td align="left" valign="top">
-					<div class="d-inline-flex">
-						<div class="input-group input-group-sm">
-							<span  class="input-group-text" style="font-size:12px;">암호</span>
-							<input type="password" name="passwd" size="7" 
-								class="form-control bg-light" style="font-size:12px;">
-						</div>
-					</div>
-				</td>
-				<td align="right" valign="top" >
-					<a href="javascript:Go_Reply();" class="btn btn-sm btn-dark text-white">답글</a>&nbsp;
-					<a href="javascript:Check_Modify();" class="btn btn-sm btn-dark text-white">수정</a>&nbsp;
-					<a href="javascript:Check_Delete();" class="btn btn-sm btn-dark text-white">삭제</a>&nbsp;
-					<a href="javascript:history.back()" class="btn btn-sm btn-dark text-white">목록</a>&nbsp;
-				</td>
-			</tr>
-		</table>
-		
-		</form>
-
-	</div>
+		<div class="clean-section">
+			<div class="row align-items-end">
+				<div class="col-md-4 clean-field mb-md-0">
+					<label>비밀번호</label>
+					<input type="password" name="passwd" class="form-control">
+				</div>
+				<div class="col-md-8 text-md-end">
+					<a href="javascript:Go_Reply();" class="btn clean-btn clean-btn-primary">답글</a>
+					<a href="javascript:Check_Modify();" class="btn clean-btn clean-btn-secondary">수정</a>
+					<a href="javascript:Check_Delete();" class="btn clean-btn clean-btn-secondary">삭제</a>
+					<a href="javascript:history.back()" class="btn clean-btn clean-btn-secondary">목록</a>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
 
 <br><br><br>
 
 <?
-	include "main_bottom.php";
+include "main_bottom.php";
 ?>
- 
- 

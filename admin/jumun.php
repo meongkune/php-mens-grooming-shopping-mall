@@ -138,7 +138,7 @@ window.onload = function() {
 <div class="row mx-1 justify-content-center">
 	<div class="col" align="center">
 
-		<h4 class="m-0 mb-3">주문 납시오~</h4>
+		<h4 class="m-0 mb-3">주문 조회</h4>
 
 		<form name="form1" method="post" action="jumun.php">
 		

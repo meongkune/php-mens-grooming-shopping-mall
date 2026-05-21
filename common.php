@@ -4,7 +4,7 @@
 	
 	mysqli_report(MYSQLI_REPORT_OFF);
 	
-	$db = mysqli_connect("localhost","shop9","1234","shop9");
+	$db = mysqli_connect("localhost", "root", "1234", "shop9");
 	if (!$db) exit("하연결에러하");
 	
 	$admin_id="admin";

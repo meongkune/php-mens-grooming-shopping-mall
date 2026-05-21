@@ -1,104 +1,78 @@
 <?
-	include "main_top.php";
-	$text1=$_REQUEST["text1"]?$_REQUEST["text1"]: "";
-	$page=$_REQUEST["page"]?$_REQUEST["page"]: 1;
-	
-	$sql="select * from qa where title like '%$text1%' or contents like '%$text1%' order by pos1 desc, pos2"; 
+include "main_top.php";
 
-	$args = "text1=$text1";
-	$result = mypagination($sql, $args, $count, $pagebar);
-	 
-	
+$text1=$_REQUEST["text1"] ?? "";
+$page=$_REQUEST["page"] ?? 1;
+
+$sql="select * from qa where title like '%$text1%' or contents like '%$text1%' order by pos1 desc, pos2";
+$args = "text1=$text1";
+$result = mypagination($sql, $args, $count, $pagebar);
 ?>
 
-
-<div class="row m-1 mb-0 justify-content-center">
-	<div class="col" align="center">
-
-		<h4 class="mt-5 mb-3">Q & A</h4>
-	
-		<hr class="my-0">
-		<table class="table table-sm m-0">
-			<tr height="35" class="bg-light">
-				<td width="10%">번호</td>
-				<td width="45%">제목</td>
-				<td width="15%" style="transform: translateX(0px);">작성자</td>
-				<td width="20%" style="transform: translateX(20px);">작성일</td>
-				<td width="10%" style="transform: translateX(0px);">조회</td>
-			</tr>
-			<?
-				foreach ($result as $row){
-					$n=strlen($row["pos2"]); //문자열길이 계산
-					$title=$row["title"];	
-					$id=$row["id"];
-			?>
-			
-			
-			<tr height="35">
-				<td style="transform: translateX(5px);"><?=$id;?></td>
-				<td align="left">
-				<?
-					if($n==1) {
-				?>		
-					<a href="qa_read.php?id=<?=$id;?>&page=<?=$page; ?>&text1=<?=$text1; ?>" style="color:#0066CC "><?=$title;?></a><br>
-				<?	
-					} else {
-					for($j=0;$j<$n-2;$j++) {
-				?>
-					&nbsp;
-				<?		
-					}
-				?>					
-					<img src="images/i_re.gif" border="0">
-					<a href="qa_read.php?id=<?=$id;?>&page=<?=$page; ?>&text1=<?=$text1; ?>" style="color:#0066CC"><?=$title;?></a><br>
-					
-				<?		
-					}
-				?>
-					
-				</td>
-				<td style="transform: translateX(15px);"><?=$row["name"];?></td>
-<td style="transform: translateX(0px);"><?=$row["writeday"];?></td>
-<td style="transform: translateX(10px);"><?=$row["count"];?></td>
-
-			</tr>
-		<?
-					}
-		?>
-
-		</table>
-
-		<table class="table table-sm table-borderless mt-1 m-0">
-			<tr>
-				<td align="left">
-					<form name="form2" method="post" action="qa.php">
-						<div class="d-inline-flex">
-							<div class="input-group input-group-sm">
-								<span class="input-group-text myfs13">제목+내용</span>
-								<input type="text" name="text1" size="10" value=""
-									class="form-control bg-light myfs13">
-								<button type="button" class="btn btn-sm btn-outline-secondary myfs13" 
-									onClick="form2.submit();">검색</button>&nbsp;
-							</div>
-						</div>
-					</form>
-				</td>
-				<td align="right">
-					<a href="qa_new.php" class="btn btn-sm btn-dark text-white myfs13">새글</a>&nbsp;&nbsp;
-				</td>
-			</tr>
-		</table>
-	
+<div class="clean-page">
+	<div class="clean-head">
+		<h4>Q &amp; A</h4>
+		<p>상품과 주문에 대한 문의를 남기고 답변을 확인하세요.</p>
 	</div>
-	
-<?
-	echo $pagebar;
-?>
 
+	<div class="clean-card">
+		<div class="clean-board-toolbar">
+			<form name="form2" method="post" action="qa.php" class="clean-form">
+				<div class="input-group">
+					<span class="input-group-text">제목+내용</span>
+					<input type="text" name="text1" value="<?=$text1;?>" class="form-control" style="max-width:260px">
+					<button type="button" class="btn clean-btn clean-btn-secondary" onClick="form2.submit();">검색</button>
+				</div>
+			</form>
+			<a href="qa_new.php" class="btn clean-btn clean-btn-primary">글쓰기</a>
+		</div>
+
+		<div class="table-responsive">
+			<table class="clean-board-table">
+				<thead>
+					<tr>
+						<th width="10%">번호</th>
+						<th>제목</th>
+						<th width="16%">작성자</th>
+						<th width="16%">작성일</th>
+						<th width="10%">조회</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?
+				foreach ($result as $row){
+					$n=strlen($row["pos2"]);
+					$title=$row["title"];
+					$id=$row["id"];
+					$is_reply = ($n != 1);
+				?>
+					<tr>
+						<td class="text-center"><?=$id;?></td>
+						<td>
+							<? if ($is_reply) { ?><span class="me-2 text-muted">↳</span><? } ?>
+							<a href="qa_read.php?id=<?=$id;?>&page=<?=$page; ?>&text1=<?=$text1; ?>" class="clean-board-title">
+								<?=htmlspecialchars($title);?>
+							</a>
+						</td>
+						<td class="text-center"><?=$row["name"];?></td>
+						<td class="text-center"><?=$row["writeday"];?></td>
+						<td class="text-center"><?=$row["count"];?></td>
+					</tr>
+				<?
+				}
+				?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="mt-3">
+		<?=$pagebar;?>
+	</div>
 </div>
 
 <br><br><br>
 
 <?
-	include "main_bottom.php";
- ?>
+include "main_bottom.php";
+?>

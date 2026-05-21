@@ -45,7 +45,7 @@
 <div class="row mx-1 justify-content-center">
 	<div class="col" align="center">
 
-	<h4 class="m-0 mb-2">회원입니당?</h4>
+	<h4 class="m-0 mb-2">회원관리</h4>
 
 	<form name="form1" method="post" action="member.php">
 	

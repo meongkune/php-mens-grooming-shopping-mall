@@ -1,41 +1,29 @@
 <?
-      $db = mysqli_connect("localhost", "zip", "zips","zip");
-      if (!$db) exit("DB연결에러");
-	  
-	  $sel = $_REQUEST["sel"]? $_REQUEST["sel"]: 1;
-	  $text1 = $_REQUEST["text1"]? $_REQUEST["text1"]: "";
-	  $zip_kind = $_REQUEST["zip_kind"]? $_REQUEST["zip_kind"]: "";
-	  
+$db = mysqli_connect("localhost", "root", "1234", "zip");
+if (!$db) exit("DB연결에러");
+
+$sel = $_REQUEST["sel"] ?? 1;
+$text1 = $_REQUEST["text1"] ?? "";
+$zip_kind = $_REQUEST["zip_kind"] ?? 0;
 ?>
 
-<!---------------------------------------------------------------------------------------------
-	제목 : 내 손으로 만드는 PHP 쇼핑몰무 따라하기 (실습용 디자인 HTML)
-
-	소속 : 인덕대학교 컴퓨터소프트웨어학과
-	이름 : 교수 윤형태 (2024.02)
----------------------------------------------------------------------------------------------->
-
-
 <!doctype html>
-<html lang="kr" style="overflow:hidden">
+<html lang="kr">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>INDUK Mall</title>
-	<link  href="css/bootstrap.min.css" rel="stylesheet">
-	<link  href="css/my.css" rel="stylesheet">
+	<title>우편번호 찾기</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/my.css" rel="stylesheet">
 	<script src="js/jquery-3.7.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<body class="zip-body">
 
-<div class="container-fulid">
-
-<!--  현재 페이지 자바스크립  -------------------------------------------->
 <script>
-	function SearchZip() 
+	function SearchZip()
 	{
-		if (!form.text1.value) 
+		if (!form.text1.value)
 		{
 			alert("검색하실 도로명이나 건물명을 입력해 주십시오.");
 			form.text1.focus();
@@ -43,25 +31,32 @@
 		}
 		form.submit();
 	}
-	
-	function SendZip(zip_kind) 
+
+	function SendZip(zip_kind)
 	{
-		if (form1.jusor.value == "") {
+		if (!form1.post_no.value) {
+			alert("검색 결과에서 주소를 선택해 주십시오.");
+			form1.post_no.focus();
+			return;
+		}
+		if (!form1.jusor.value) {
 			alert("나머지 주소를 입력하여 주십시오.");
 			form1.jusor.focus();
 			return;
 		}
-		var str, zip, juso;
-		str = form1.post_no.value;
+		if (!opener || !opener.form2) {
+			alert("주소를 입력할 원래 창을 찾을 수 없습니다.");
+			return;
+		}
 
-		str = str.split("^^");
-		zip = str[0];
-		juso = str[1] + " " + form1.jusor.value;
+		var str = form1.post_no.value.split("^^");
+		var zip = str[0];
+		var juso = str[1] + " " + form1.jusor.value;
 
-		if (zip_kind==1) {
+		if (zip_kind == 1) {
 			opener.form2.o_zip.value = zip;
 			opener.form2.o_juso.value = juso;
-		} else if (zip_kind==2)	{
+		} else if (zip_kind == 2) {
 			opener.form2.r_zip.value = zip;
 			opener.form2.r_juso.value = juso;
 		} else {
@@ -73,124 +68,85 @@
 	}
 </script>
 
-<!--  페이지 제목 -->
-<div class="row m-0">
-	<div class="col bg-light" align="center">
-		<h4 class="m-2">우편번호 (Zipcode)</h4>
-	</div>	
-	<hr size="4px" class="my-0">
-</div>	
-
-<div class="row m-1 mb-0">
-	<div class="col" align="center">
-		<br>
-		<br>
-		<!--  form 시작 -->
-		<form  name="form" method="post" action="zipcode.php"> <!--  여기 -->
-		
-		<input type="hidden" name="zip_kind" value="<?=$zip_kind?>"> <!--  여기 -->
-
-		<div align="left">
-			<font size="2" color="#666666"><b>검색할 도로명이나 건물명 일부를 입력해 주세요</b></font>
-			<div class="d-inline-flex mt-1">
-				<div class="input-group input-group-sm">
-					<select name="sel" class="form-select form-select-sm bg-light" style="width:100px;font-size:13px">
-						<option value="1" selected>서울</option>
-						<option value="2">경기</option>
-						<option value="3">인천</option>
-						<option value="4">강원</option>
-						<option value="5">충북</option>
-						<option value="6">세종</option>
-						<option value="7">충남</option>
-						<option value="8">대전</option>
-						<option value="9">경북</option>
-						<option value="10">대구</option>
-						<option value="11">울산</option>
-						<option value="12">부산</option>
-						<option value="13">경남</option>
-						<option value="14">전북</option>
-						<option value="15">전남</option>
-						<option value="16">광주</option>
-						<option value="17">제주</option>
-					</select>				
-					<input type="text" name="text1" value="" class="form-control" style="width:150px;">
-					<a href="javascript:SearchZip()" class="btn btn-sm btn-outline-secondary" 
-						style="width:50px;font-size:13px">검색</a>
-				</div>
-			</div>
-		</div>
-		</form>
-		<br>
-		<form name="form1">
-		<div class="d-inline-flex w-100 mb-1">
-			<!-- 도로명 우편번호 인 경우 -->
-			<select name="post_no" class="form-select form-select-sm bg-light" style="font-size:13px">
-			<?
-				if($text1) //검색어가 있는 경우
-				{
-					 $sql = "SELECT * FROM zip$sel WHERE juso4 LIKE '%$text1%' OR juso7 LIKE '%$text1%' ";
-                        $result = mysqli_query($db, $sql);
-
-                        if (!$result) {
-                            echo "<option>DB 오류: " . mysqli_error($db) . "</option>";
-                        } else {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $zip = $row["zip"];
-                                $A = $row["juso1"] . " " . $row["juso2"] . " " . $row["juso3"]. " " .  $row["juso4"];
-								if($row["juso5"])   $A .=$row["juso5"];
-															if($row["juso6"]!="0")   $A .="-". $row["juso6"];
-								if($row["juso7"])   $A .="". $row["juso7"];
-	
-                                echo "<option value='$zip^^$A'>[$zip] $A</option>";
-                            }
-                        }
-					
-					
-					/* // SQL 쿼리 작성
-    $sql = "SELECT * FROM zip$sel WHERE juso4 LIKE '%$text1%' OR juso7 LIKE '%$text1%' ";
-    $result = mysqli_query($db, $sql);
-
-    // 결과를 옵션 태그로 출력
-    while($row = mysqli_fetch_assoc($result)) {
-        $zip = $row["zip"];
-        $juso = $row["juso1"] . " " . $row["juso2"] . " " . $row["juso3"];
-        echo "<option value='$zip^^$juso'>[$zip] $juso</option>";
-					 */
-					
-					
-					
-						/* $sql="select * from zip$sel where juso4 like '%$text1%' or juso7 like '%$text1%' ";
-						foreach($result as $row)
-						{
-							$zip = $row["zip"];
-							$A= $row["juso1"] */
-				}
-				else	
-					echo "<option></option>"
-			
-			
-			
-			
-			
-			?>
-			
-						</select>
-		</div>
-		<div class="d-inline-flex w-100 mb-2">
-			<input type="text" name="jusor" id="jusor" value="" 
-				class="form-control form-control-sm" style="font-size:13px">				
-		</div>
-		<font size="2" color="#666666"><b>나머지 주소를 입력해 주세요</b></font>
-		</form>
-		<br><br>
-
-		<!-- 회원가입/수정인 경우 : SendZip(0), 주문지인 경우 : SendZip(1), 배송지인 경우 : SendZip(2) -->
-		<a href="javascript:SendZip(<?= $zip_kind ?>);" class="btn btn-sm btn-dark text-white myfont">확 인</a>
-
+<div class="zip-page">
+	<div class="zip-head">
+		<h4>우편번호 찾기</h4>
+		<p>도로명 또는 건물명 일부를 입력해 검색하세요.</p>
 	</div>
-</div>
 
-<!-------------------------------------------------------------------------------------------->	
+	<form name="form" method="post" action="zipcode.php" class="zip-search">
+		<input type="hidden" name="zip_kind" value="<?=$zip_kind?>">
+
+		<div class="input-group">
+			<select name="sel" class="form-select">
+<?
+$sido = array(
+	1=>"서울", 2=>"경기", 3=>"인천", 4=>"강원", 5=>"충북", 6=>"세종",
+	7=>"충남", 8=>"대전", 9=>"경북", 10=>"대구", 11=>"울산", 12=>"부산",
+	13=>"경남", 14=>"전북", 15=>"전남", 16=>"광주", 17=>"제주"
+);
+foreach ($sido as $key => $name) {
+	$tmp = ($key == $sel) ? "selected" : "";
+	echo "<option value='$key' $tmp>$name</option>";
+}
+?>
+			</select>
+			<input type="text" name="text1" value="<?=htmlspecialchars($text1);?>" class="form-control" onKeydown="if (event.keyCode == 13) { SearchZip(); return false; }">
+			<a href="javascript:SearchZip()" class="btn zip-btn zip-btn-primary">검색</a>
+		</div>
+	</form>
+
+	<form name="form1" class="zip-result">
+		<label>검색 결과</label>
+		<select name="post_no" class="form-select" size="6">
+<?
+$has_result = false;
+if ($text1) {
+	$table = "zip" . (int)$sel;
+	$safe_text = mysqli_real_escape_string($db, $text1);
+	$sql = "SELECT * FROM $table
+		WHERE zip LIKE '%$safe_text%'
+		   OR juso1 LIKE '%$safe_text%'
+		   OR juso2 LIKE '%$safe_text%'
+		   OR juso3 LIKE '%$safe_text%'
+		   OR juso4 LIKE '%$safe_text%'
+		   OR juso5 LIKE '%$safe_text%'
+		   OR juso6 LIKE '%$safe_text%'
+		   OR juso7 LIKE '%$safe_text%'";
+	$result = mysqli_query($db, $sql);
+
+	if (!$result) {
+		echo "<option value=''>DB 오류: " . htmlspecialchars(mysqli_error($db)) . "</option>";
+	} else {
+		while ($row = mysqli_fetch_assoc($result)) {
+			$has_result = true;
+			$zip = $row["zip"];
+			$address = $row["juso1"] . " " . $row["juso2"] . " " . $row["juso3"] . " " . $row["juso4"];
+			if ($row["juso5"]) $address .= $row["juso5"];
+			if ($row["juso6"] != "0") $address .= "-" . $row["juso6"];
+			if ($row["juso7"]) $address .= " " . $row["juso7"];
+			$value = htmlspecialchars($zip . "^^" . $address, ENT_QUOTES);
+			$text = htmlspecialchars("[$zip] $address");
+			echo "<option value='$value'>$text</option>";
+		}
+		if (!$has_result) {
+			echo "<option value=''>검색 결과가 없습니다.</option>";
+		}
+	}
+} else {
+	echo "<option value=''>검색어를 입력한 뒤 검색하세요.</option>";
+}
+?>
+		</select>
+
+		<label class="mt-3">나머지 주소</label>
+		<input type="text" name="jusor" id="jusor" value="" class="form-control" placeholder="동/호수 등 상세주소">
+	</form>
+
+	<div class="zip-actions">
+		<a href="javascript:self.close();" class="btn zip-btn zip-btn-secondary">닫기</a>
+		<a href="javascript:SendZip(<?= (int)$zip_kind ?>);" class="btn zip-btn zip-btn-primary">확인</a>
+	</div>
 </div>
 
 </body>

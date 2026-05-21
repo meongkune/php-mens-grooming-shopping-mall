@@ -53,11 +53,11 @@
 				list($id, $num, $opts_id1, $opts_id2, $extra_price) = explode("^", $cart[$i]);
 $extra_price = (int)$extra_price;
 				$opt_name1 = $opt_name2 = "";
-				if ($opts_id1) {
+				if (is_numeric($opts_id1) && (int)$opts_id1 > 0) {
 					$res1 = mysqli_query($db, "select * from opts where id = $opts_id1");
 					if ($res1) $opt_name1 = mysqli_fetch_array($res1)['name'];
 				}
-				if ($opts_id2) {
+				if (is_numeric($opts_id2) && (int)$opts_id2 > 0) {
 					$res2 = mysqli_query($db, "select * from opts where id = $opts_id2");
 					if ($res2) $opt_name2 = mysqli_fetch_array($res2)['name'];
 				}
@@ -76,7 +76,7 @@ $product_total = ($base_price + $extra_price) * $num;
 		<tr>
 			<td><a href="product_ex.php?id=<?=$id?>"><img src="product/<?=$product['image1']?>" width="60" height="70"></a></td>
 			<td>
-				<a href="product_ex.php?id=<?=$id?>" class="text-decoration-none text-dark fw-bold"><?=$product['company']?> <?=$product['name']?></a><br>
+				<a href="product_ex.php?id=<?=$id?>" class="text-decoration-none text-dark fw-bold"><?=$product['coname']?> <?=$product['name']?></a><br>
 				<? if ($opt_name1 || $opt_name2) { ?>
 					<small><b>[옵션]</b> <?= $opt_name1 ?> &nbsp; <?= $opt_name2 ?></small>
 				<? } ?>
@@ -99,7 +99,7 @@ $total_price_each = $base_price + $extra_price;
 		<?
 			}
 		}
-		if ($total < $max_baesongbi) {
+		if ($total > 0 && $total < $max_baesongbi) {
 			$final_total = $total + $baesongbi;
 		} else {
 			$baesongbi = 0;

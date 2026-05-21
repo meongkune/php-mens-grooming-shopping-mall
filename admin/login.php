@@ -1,28 +1,19 @@
-
 <?
-	include "common.php";
+include "common.php";
 ?>
-
 
 <!doctype html>
 <html lang="kr">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>INDUK Mall</title>
-	<link  href="../css/bootstrap.min.css" rel="stylesheet">
-	<link  href="../css/my.css" rel="stylesheet">
-	<script src="..js/jquery-3.7.1.min.js"></script>
+	<title>INDUK Mall Admin</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/my.css" rel="stylesheet">
+	<script src="../js/jquery-3.7.1.min.js"></script>
 	<script src="../js/bootstrap.bundle.min.js"></script>
-	<script src="../js/my.js"></script>
 </head>
-<body onLoad="javascript:form1.adminid.focus();">
-
-<div class="container">
-<!-------------------------------------------------------------------------------------------->	
-<script> //document.write(admin_menu());</script>
-<!-------------------------------------------------------------------------------------------->	
-<br><br><br><br><br><br>
+<body class="admin-login" onLoad="javascript:form1.adminid.focus();">
 
 <script>
 	function check_id()
@@ -31,7 +22,7 @@
 		{
 			alert("ID를 입력해주세요");
 			form1.adminid.focus();
-			return fasle;
+			return false;
 		}
 		if (!form1.adminpw.value)
 		{
@@ -43,49 +34,27 @@
 	}
 </script>
 
-<div class="row m-1  justify-content-center">
-	<div class="col" align="center">
+<div class="container">
+	<form name="form1" method="post" action="login_check.php" onSubmit="return check_id();" class="admin-login-card">
+		<div class="admin-login-head">
+			<h3>Administrator Login</h3>
+			<p>관리자 계정으로 접속해 상품, 주문, 회원 정보를 관리합니다.</p>
+		</div>
 
-		<form name="form1" method="post" action="login_check.php"  onSubmit="return check_id();">
+		<div class="admin-login-body">
+			<div class="admin-login-field">
+				<label>아이디</label>
+				<input type="text" name="adminid" value="" tabindex="1" class="form-control">
+			</div>
 
-		<table width="350" height="200" style="border:4px solid #eeeeee">
-			<tr>
-				<td align="center">
-					<table width="100%" height="200">
-						<tr height="60" class="bg-light">
-							<td colspan="3" class="bg-light pt-2"><h3>Administrator Login</h3></td>
-						</tr>
-						<tr height="20"><td colspan="3"></td></tr>
-						<tr height="50">
-							<td width="100">아이디</td>
-							<td width="170" align="left">
-								<div class="d-inline-flex">
-									<input type="text" name="adminid" size="20" value="" tabindex="1" class="form-control form-control-sm" placeholder="">
-								</div>
-							</td>
-							<td width="130" rowspan="2" align="left">&nbsp;
-								<button onclick="javascript:check_id();"  class="btn btn-sm btn-secondary" style="height:75px;width:75px;">로그인</button> 
-							</td>
-						</tr>
-						<tr height="50">
-							<td>암 호</td>
-							<td align="left">
-								<div class="d-inline-flex">
-									<input type="password" name="adminpw" size="20" value="" tabindex="2" class="form-control form-control-sm" placeholder="">
-								</div>
-							</td>
-						</tr>
-						<tr height="20"><td width="50" colspan="3"></td></tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+			<div class="admin-login-field">
+				<label>암호</label>
+				<input type="password" name="adminpw" value="" tabindex="2" class="form-control">
+			</div>
 
-		</form>
-
-	</div>
-</div>
-<!-------------------------------------------------------------------------------------------->	
+			<button type="submit" class="btn btn-admin-login">로그인</button>
+		</div>
+	</form>
 </div>
 
 </body>
